@@ -1,6 +1,6 @@
 # Real-Time auditing of Kubernetes events with Falco
 
-Kubernetes can be configured to emit
+Kubernetes can be configured to emit audit events every time the kube api is accessed. We can process these with falco in real time to immediately identify suspicious our malicious behavior. 
 
 1. Create vm from [VPC service](https://cloud.ibm.com/vpc/overview) (gen2)
 

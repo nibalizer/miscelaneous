@@ -157,7 +157,51 @@ Jul 31 21:53:03 nibz-falco-dev falco: 21:52:58.079348992: Warning K8s Operation 
 Jul 31 21:53:03 nibz-falco-dev falco: 21:53:01.160041984: Warning K8s Operation performed by user not in allowed list of users (user=br3dsptd0mfheg0375g0-admin target=cloud-controller-manager/endpoints verb=update uri=/api/v1/namespaces/kube-system/endpoints/cloud-controller-manager resp=200)
 ```
 
-# Next Steps
+
+# Set up forwarding of events from falco into logdna
+
+Now set up [Log analysis on IBM Cloud with Log DNA](https://www.ibm.com/cloud/log-analysis). You'll want at least 30 days of retention for this example.
+
+![logdna setup](img/ibmcloud_logdna.png)
+
+Navigate to "Edit Log Sources"
 
 
-1. Set up forwarding of events from falco into logdna
+Then find your LogDNA API Key and Log host. The easiest way to do this is to select the "Linux Ubuntu/Debian" panel and copy/paste out the key and host. Note that the API Host and Log Host are different. We only need Log host for this exercise.
+
+![logdna setup](img/logdna_credentials.png)
+
+```bash
+# modify the below if your log host is not in us-south
+export LOGDNA_URL="https://logs.us-south.logging.cloud.ibm.com/logs/ingest"
+export LOGDNA_KEY="eb250a1fedd547d6ae0a"
+```
+
+Now pull down the Falco -> LogDNA exporter script
+
+```
+git clone https://github.com/falcosecurity/evolution
+cp -r evolution/integrations/logdna/ .
+virtualenv --python=python3 venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+In most cases you'll have to relax permissions on the falco unix socket. You can also use a unix group if `777` is too insecure for you.
+
+```
+sudo chmod 777 /var/run/falco.sock
+```
+
+Now you can run the `falco-logdna` exporter
+
+```
+python falco-logdna.py --logdna-key ${LOGDNA_KEY} --logdna-url ${LOGDNA_URL}
+```
+
+
+In the LogDNA UI you should see kubernetes security events.
+
+
+![logdna](img/logdna_cap.png)
+

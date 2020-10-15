@@ -97,7 +97,7 @@ You should see notifications that falco is running but nothing specific to kuber
 
 ## Set up kubernetes auditing
 
-    IBM Cloud Kubernetes Service (IKS) runs the kubernetes daemons for you. Configuring [kubernetes auditing](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/) requires configuring the kubernetes API serever command-line arguments. IBM Cloud Provides a mechanism to control the audit webhook, and where it points. Read more [here](https://cloud.ibm.com/docs/containers?topic=containers-health#webhook_logdna).
+IBM Cloud Kubernetes Service (IKS) runs the kubernetes daemons for you. Configuring [kubernetes auditing](https://kubernetes.io/docs/tasks/debug-application-cluster/audit/) requires configuring the kubernetes API serever command-line arguments. IBM Cloud Provides a mechanism to control the audit webhook, and where it points. Read more [here](https://cloud.ibm.com/docs/containers?topic=containers-health#webhook_logdna).
 
 ```
 ibmcloud ks cluster master audit-webhook set --cluster <cluster_name> --remote-server http://<server_floating_ip>:8765/k8s_audit

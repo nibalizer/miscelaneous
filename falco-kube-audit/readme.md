@@ -16,6 +16,8 @@ Kubernetes is API driven. In many deployments each user, administrator, and deve
 This can be completed in about half an hour with no issue, faster for people trying to run through it.
 
 
+## Configuring Kubernetes Auditing
+
 Kubernetes can be configured to emit audit events every time the kube api is accessed. We can process these with falco in real time to immediately identify suspicious our malicious behavior. 
 
 1. Create vm from [VPC service](https://cloud.ibm.com/vpc/overview) (gen2)

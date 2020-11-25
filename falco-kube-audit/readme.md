@@ -1,10 +1,26 @@
 # Real-Time auditing of Kubernetes events with Falco
 
+As Kubernetes becomes the platform of choice for both development and deployment, securing Kubernetes grows from a passing concern to a first class requirement. This document covers *auditing* Kubernetes clusters in real time for activity and building a system to automatically log and process audit events.
+
+Kubernetes is API driven. In many deployments each user, administrator, and developer communicates with the API. When a user issues a `kubectl create deployment` command, that is hitting the API, and the request is logged through the Kubernetes audit system. There are non-human API interactions to log and audit as well, operators work directly against the API with their own set of credentials, and external systems from cloud providers will hit the API as well. All of these interactions should be logged, audited, and processed, with alerts sent out if out-of-compliance behavior is detected.
+
+[Falco](https://falco.org/) is a CNCF security tool that has first-tier support for [Kubernetes audit payloads](https://falco.org/docs/event-sources/kubernetes-audit/) and a rich set of tools for processing those events.
+
+## Prerequisites
+
+* An IBM Cloud Account
+* An IBM Cloud Kubernetes Service cluster
+
+## Estimated Time
+
+This can be completed in about half an hour with no issue, faster for people trying to run through it.
+
+
 Kubernetes can be configured to emit audit events every time the kube api is accessed. We can process these with falco in real time to immediately identify suspicious our malicious behavior. 
 
 1. Create vm from [VPC service](https://cloud.ibm.com/vpc/overview) (gen2)
 
-1. Get the ip of your virtual mahcine's public floating ip address
+1. Get the ip of your virtual machine's public floating ip address
 
 ```
 $ ibmcloud target -r us-east
@@ -204,4 +220,23 @@ In the LogDNA UI you should see kubernetes security events.
 
 
 ![logdna](img/logdna_cap.png)
+
+
+## Conclusion
+
+In this tutorial we've done the following:
+
+* Configured IBM Kubernetes Service to transmit audit logs to our service
+* Set up a VM on IBM Cloud VPC with proper config/networking
+* Set up falco to receive audit payloads from Kubernetes
+* Configured Falco to store those logs for further analysis in LogDNA
+
+What is next:
+
+* Write or configure a [falco rule](https://falco.org/docs/event-sources/kubernetes-audit/) to pick out a specific security incident
+* Configure falco to use chatops to alert admins of a security [incident](https://github.com/falcosecurity/falcosidekick/)
+* Read more about [falco for auditing on IBM Cloud](https://developer.ibm.com/technologies/containers/tutorials/installing-and-using-sysdig-falco/)
+* Run Falco [inside Kubernetes](https://github.com/falcosecurity/charts/tree/master/falco) if you don't prefer to run it on a separate VM host
+
+
 
